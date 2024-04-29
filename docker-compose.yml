@@ -1,0 +1,31 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      - PORT=80
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - DATABASE_USERNAME=DemoUser
+      - DATABASE_PASSWORD=DemoPassword
+      - DATABASE_NAME=DemoBookStore
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: DemoPassword
+      MYSQL_DATABASE: DemoBookStore
+      MYSQL_USER: DemoUser
+      MYSQL_PASSWORD: DemoPassword
+    volumes:
+      - db_data:/var/lib/mysql
+volumes:
+  db_data:
